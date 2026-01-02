@@ -828,3 +828,159 @@ body {
   }
 
   .toggle-btn
+  .reset-btn,
+  .result-count {
+    width: 100%;
+  }
+
+  /* Improve ghost cards on mobile */
+  .ghost-card {
+    padding: 1.25rem;
+  }
+
+  .ghost-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .probability-display {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .probability-bar {
+    width: 100%;
+  }
+
+  /* Stack filter buttons more tightly */
+  .filter-buttons {
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  /* Adjust header spacing */
+  .header {
+    padding: 1.5rem;
+  }
+
+  .instructions {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens */
+  .evidence-selector {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .evidence-btn {
+    min-height: 90px;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+  }
+
+  .header .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .instructions {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .badge-row {
+    gap: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.7rem;
+  }
+
+  .detail-row {
+    gap: 0.75rem;
+  }
+
+  .detail-icon {
+    font-size: 1.2rem;
+  }
+
+  .detail-content h4 {
+    font-size: 0.85rem;
+  }
+
+  .detail-content p,
+  .detail-content ul {
+    font-size: 0.8rem;
+  }
+
+  .ghost-card {
+    padding: 1rem;
+  }
+
+  .ghost-name {
+    font-size: 1.1rem;
+  }
+
+  .probability-percent {
+    font-size: 1.75rem;
+  }
+
+  /* Ensure buttons are touch-friendly */
+  .toggle-btn,
+  .reset-btn,
+  .filter-btn,
+  .evidence-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .header,
+  .footer,
+  .controls {
+    display: none;
+  }
+
+  .ghost-list {
+    padding: 0;
+  }
+
+  .ghost-card {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
+
+/* ============================================
+   DARK MODE PREFERENCE (Future Enhancement)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  /* Already dark by default, this ensures compatibility */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
