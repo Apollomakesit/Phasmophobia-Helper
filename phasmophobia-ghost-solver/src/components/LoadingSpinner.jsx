@@ -1,8 +1,10 @@
 function LoadingSpinner() {
   return (
-    <div className="loading-container" aria-live="polite" aria-busy="true">
-      <div className="ghost-loader">👻</div>
-      <p>Loading ghost data...</p>
+    <div className="loading-container" aria-label="Loading analysis">
+      <div className="ghost-loader" aria-hidden="true">
+        👻
+      </div>
+      <p className="loading-text">Analyzing evidence...</p>
     </div>
   );
 }
