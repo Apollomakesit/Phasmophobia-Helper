@@ -1,106 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phasmophobia Helper - Advanced Ghost Tracker</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🎃 Phasmophobia Helper</h1>
-            <p class="subtitle">Advanced Ghost Identification Tool</p>
-        </header>
-
-        <div class="main-grid">
-            <!-- Evidence Selection -->
-            <section class="card evidence-section">
-                <h2>Evidence Selection</h2>
-                <div class="difficulty-selector">
-                    <label>Difficulty:</label>
-                    <select id="difficulty">
-                        <option value="3">Amateur/Intermediate (3 Evidence)</option>
-                        <option value="2">Professional (2 Evidence)</option>
-                        <option value="1">Nightmare (1 Evidence)</option>
-                        <option value="0">Insanity (0 Evidence)</option>
-                    </select>
-                </div>
-                <div class="evidence-grid" id="evidenceGrid"></div>
-                <button id="resetEvidence" class="btn-secondary">Reset Evidence</button>
-            </section>
-
-            <!-- BPM Detector -->
-            <section class="card bpm-section">
-                <h2>Hunt Speed (BPM) Detector</h2>
-                <div class="bpm-display">
-                    <div class="bpm-value" id="bpmValue">0</div>
-                    <div class="bpm-label">BPM</div>
-                </div>
-                <div class="bpm-info" id="bpmInfo">Tap the button to the heartbeat rhythm</div>
-                <button id="tapButton" class="btn-primary btn-large">TAP TO BEAT</button>
-                <button id="resetBpm" class="btn-secondary">Reset BPM</button>
-                <div class="speed-classification" id="speedClass"></div>
-            </section>
-
-            <!-- Timers -->
-            <section class="card timers-section">
-                <h2>Event Timers</h2>
-                <div class="timer-grid">
-                    <div class="timer-item">
-                        <label>Smudge Timer</label>
-                        <div class="timer-display" id="smudgeTimer">90s</div>
-                        <button class="btn-timer" data-timer="smudge">Start</button>
-                    </div>
-                    <div class="timer-item">
-                        <label>Hunt Cooldown</label>
-                        <div class="timer-display" id="huntTimer">25s</div>
-                        <button class="btn-timer" data-timer="hunt">Start</button>
-                    </div>
-                    <div class="timer-item">
-                        <label>Custom Timer</label>
-                        <div class="timer-display" id="customTimer">0s</div>
-                        <input type="number" id="customTimerInput" placeholder="Seconds" min="1" max="999">
-                        <button class="btn-timer" data-timer="custom">Start</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sanity Tracker -->
-            <section class="card sanity-section">
-                <h2>Sanity Tracker</h2>
-                <div class="sanity-display">
-                    <div class="sanity-bar">
-                        <div class="sanity-fill" id="sanityFill"></div>
-                    </div>
-                    <div class="sanity-value" id="sanityValue">100%</div>
-                </div>
-                <div class="sanity-controls">
-                    <button class="btn-sanity" data-change="-5">-5%</button>
-                    <button class="btn-sanity" data-change="-10">-10%</button>
-                    <button class="btn-sanity" data-change="0">Reset</button>
-                    <button class="btn-sanity" data-change="+10">+10%</button>
-                    <button class="btn-sanity" data-change="+5">+5%</button>
-                </div>
-                <div class="sanity-warning" id="sanityWarning"></div>
-            </section>
-
-            <!-- Behavioral Tracking -->
-            <section class="card behavior-section">
-                <h2>Behavioral Observations</h2>
-                <div id="behaviorChecklist"></div>
-            </section>
-
-            <!-- Ghost Results -->
-            <section class="card results-section">
-                <h2>Possible Ghosts</h2>
-                <div class="ghost-count" id="ghostCount">27 possible ghosts</div>
-                <div id="ghostResults"></div>
-            </section>
-        </div>
-    </div>
-
-    <script src="ghosts.js"></script>
-    <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phasmophobia Ghost Solver</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
