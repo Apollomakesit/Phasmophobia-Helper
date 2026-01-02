@@ -1,115 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Phasmophobia Ghost Identifier</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>👻 Phasmophobia Ghost Identifier</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phasmophobia Helper - Advanced Ghost Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎃 Phasmophobia Helper</h1>
+            <p class="subtitle">Advanced Ghost Identification Tool</p>
+        </header>
 
-    <section>
-      <strong>Difficulty:</strong>
-      <label>
-        <input type="radio" name="difficulty" value="amateur" checked />
-        Amateur
-      </label>
-      <label>
-        <input type="radio" name="difficulty" value="intermediate" />
-        Intermediate
-      </label>
-      <label>
-        <input type="radio" name="difficulty" value="professional" />
-        Professional
-      </label>
-      <label>
-        <input type="radio" name="difficulty" value="nightmare" />
-        Nightmare
-      </label>
-      <label>
-        <input type="radio" name="difficulty" value="insanity" />
-        Insanity
-      </label>
-    </section>
+        <div class="main-grid">
+            <!-- Evidence Selection -->
+            <section class="card evidence-section">
+                <h2>Evidence Selection</h2>
+                <div class="difficulty-selector">
+                    <label>Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="3">Amateur/Intermediate (3 Evidence)</option>
+                        <option value="2">Professional (2 Evidence)</option>
+                        <option value="1">Nightmare (1 Evidence)</option>
+                        <option value="0">Insanity (0 Evidence)</option>
+                    </select>
+                </div>
+                <div class="evidence-grid" id="evidenceGrid"></div>
+                <button id="resetEvidence" class="btn-secondary">Reset Evidence</button>
+            </section>
 
-    <section>
-      <h2>Evidence</h2>
-      <div id="evidence-panel"></div>
-      <small>
-        Left‑click = select evidence, right‑click = mark as excluded (red).
-      </small>
-    </section>
+            <!-- BPM Detector -->
+            <section class="card bpm-section">
+                <h2>Hunt Speed (BPM) Detector</h2>
+                <div class="bpm-display">
+                    <div class="bpm-value" id="bpmValue">0</div>
+                    <div class="bpm-label">BPM</div>
+                </div>
+                <div class="bpm-info" id="bpmInfo">Tap the button to the heartbeat rhythm</div>
+                <button id="tapButton" class="btn-primary btn-large">TAP TO BEAT</button>
+                <button id="resetBpm" class="btn-secondary">Reset BPM</button>
+                <div class="speed-classification" id="speedClass"></div>
+            </section>
 
-    <section>
-      <h2>Most Likely Ghosts</h2>
-      <div id="ghost-list"></div>
+            <!-- Timers -->
+            <section class="card timers-section">
+                <h2>Event Timers</h2>
+                <div class="timer-grid">
+                    <div class="timer-item">
+                        <label>Smudge Timer</label>
+                        <div class="timer-display" id="smudgeTimer">90s</div>
+                        <button class="btn-timer" data-timer="smudge">Start</button>
+                    </div>
+                    <div class="timer-item">
+                        <label>Hunt Cooldown</label>
+                        <div class="timer-display" id="huntTimer">25s</div>
+                        <button class="btn-timer" data-timer="hunt">Start</button>
+                    </div>
+                    <div class="timer-item">
+                        <label>Custom Timer</label>
+                        <div class="timer-display" id="customTimer">0s</div>
+                        <input type="number" id="customTimerInput" placeholder="Seconds" min="1" max="999">
+                        <button class="btn-timer" data-timer="custom">Start</button>
+                    </div>
+                </div>
+            </section>
 
-      <h3>Top Candidates</h3>
-      <ul id="ranked-ghosts"></ul>
-    </section>
+            <!-- Sanity Tracker -->
+            <section class="card sanity-section">
+                <h2>Sanity Tracker</h2>
+                <div class="sanity-display">
+                    <div class="sanity-bar">
+                        <div class="sanity-fill" id="sanityFill"></div>
+                    </div>
+                    <div class="sanity-value" id="sanityValue">100%</div>
+                </div>
+                <div class="sanity-controls">
+                    <button class="btn-sanity" data-change="-5">-5%</button>
+                    <button class="btn-sanity" data-change="-10">-10%</button>
+                    <button class="btn-sanity" data-change="0">Reset</button>
+                    <button class="btn-sanity" data-change="+10">+10%</button>
+                    <button class="btn-sanity" data-change="+5">+5%</button>
+                </div>
+                <div class="sanity-warning" id="sanityWarning"></div>
+            </section>
 
-    <section>
-      <h2>Ghost Details</h2>
-      <div id="ghost-details">
-        <em>Select a ghost to see its description here.</em>
-      </div>
-    </section>
+            <!-- Behavioral Tracking -->
+            <section class="card behavior-section">
+                <h2>Behavioral Observations</h2>
+                <div id="behaviorChecklist"></div>
+            </section>
 
-    <section>
-      <h2>🎧 Advanced Tools <button id="tools-help" type="button">?</button></h2>
-
-      <div id="tools-help-text" class="hidden">
-        <p>
-          <strong>BPM:</strong> Tap or measure the ghost’s footstep tempo and
-          enter it here to highlight ghosts whose speed and BPM match best.
-        </p>
-        <p>
-          <strong>Smudge Timer:</strong> Starts a countdown for how long smudge
-          sticks prevent hunts, shorter for Demon.
-        </p>
-        <p>
-          <strong>Onryo Candle Counter:</strong> Tracks candle extinguishes to
-          see when an Onryo is likely to hunt.
-        </p>
-        <p>
-          <strong>Mimic Probability:</strong> Estimates how likely the Mimic is
-          based on evidence, orbs, and behaviour.
-        </p>
-      </div>
-
-      <div>
-        Footstep BPM:
-        <input type="number" id="bpm-input" placeholder="BPM" />
-        <button id="bpm-check" type="button">Check BPM</button>
-      </div>
-      <div id="bpm-result"></div>
-
-      <div style="margin-top: 0.5rem">
-        Smudge Timer:
-        <select id="smudge-select">
-          <option value="Normal">Normal (180s)</option>
-          <option value="Demon">Demon (60s)</option>
-        </select>
-        <button id="smudge-start" type="button">Start Timer</button>
-        <div id="smudge-result"></div>
-      </div>
-
-      <div style="margin-top: 0.5rem">
-        Onryo Candle Counter:
-        <button id="onryo-add" type="button">Increment</button>
-        <button id="onryo-reset" type="button">Reset</button>
-        <div id="onryo-count">0</div>
-      </div>
-
-      <div style="margin-top: 0.5rem">
-        Mimic Probability:
-        <span id="mimic-result">Low/Medium</span>
-      </div>
-    </section>
+            <!-- Ghost Results -->
+            <section class="card results-section">
+                <h2>Possible Ghosts</h2>
+                <div class="ghost-count" id="ghostCount">27 possible ghosts</div>
+                <div id="ghostResults"></div>
+            </section>
+        </div>
+    </div>
 
     <script src="ghosts.js"></script>
-    <script src="solver.js"></script>
-    <script src="tools.js"></script>
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
