@@ -1,52 +1,56 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ghosts } from './data/ghosts';
 import EvidenceSelector from './components/EvidenceSelector';
 import GhostList from './components/GhostList';
 import BehaviorFilters from './components/BehaviorFilters';
 import './App.css';
 
-// Inside App component, replace useState with:
-const [selectedEvidence, setSelectedEvidence] = useState(() => {
-  const saved = localStorage.getItem('selectedEvidence');
-  return saved ? JSON.parse(saved) : [];
-});
-
-const [excludedEvidence, setExcludedEvidence] = useState(() => {
-  const saved = localStorage.getItem('excludedEvidence');
-  return saved ? JSON.parse(saved) : [];
-});
-
-// Add useEffect to persist state
-useEffect(() => {
-  localStorage.setItem('selectedEvidence', JSON.stringify(selectedEvidence));
-  localStorage.setItem('excludedEvidence', JSON.stringify(excludedEvidence));
-}, [selectedEvidence, excludedEvidence]);
-
-import './App.css';
-
 function App() {
-  const [selectedEvidence, setSelectedEvidence] = useState([]);
-  const [excludedEvidence, setExcludedEvidence] = useState([]);
+  // Initialize state with localStorage persistence
+  const [selectedEvidence, setSelectedEvidence] = useState(() => {
+    const saved = localStorage.getItem('selectedEvidence');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [excludedEvidence, setExcludedEvidence] = useState(() => {
+    const saved = localStorage.getItem('excludedEvidence');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [showDetails, setShowDetails] = useState(false);
   const [behaviorFilters, setBehaviorFilters] = useState({});
 
+  // Persist state to localStorage
+  useEffect(() => {
+    localStorage.setItem('selectedEvidence', JSON.stringify(selectedEvidence));
+    localStorage.setItem('excludedEvidence', JSON.stringify(excludedEvidence));
+  }, [selectedEvidence, excludedEvidence]);
+
+  // Handle evidence selection (3-state: unselected → confirmed → excluded → unselected)
   const handleEvidenceClick = (evidence) => {
     if (selectedEvidence.includes(evidence)) {
+      // If confirmed, move to excluded
       setSelectedEvidence(prev => prev.filter(e => e !== evidence));
       setExcludedEvidence(prev => [...prev, evidence]);
     } else if (excludedEvidence.includes(evidence)) {
+      // If excluded, reset to unselected
       setExcludedEvidence(prev => prev.filter(e => e !== evidence));
     } else {
+      // If unselected, move to confirmed
       setSelectedEvidence(prev => [...prev, evidence]);
     }
   };
 
+  // Reset all selections
   const handleReset = () => {
     setSelectedEvidence([]);
     setExcludedEvidence([]);
     setBehaviorFilters({});
+    localStorage.removeItem('selectedEvidence');
+    localStorage.removeItem('excludedEvidence');
   };
 
+  // Calculate ghost probabilities based on evidence
   const filteredGhosts = useMemo(() => {
     return ghosts.map(ghost => {
       const matchingEvidence = selectedEvidence.filter(ev => 
