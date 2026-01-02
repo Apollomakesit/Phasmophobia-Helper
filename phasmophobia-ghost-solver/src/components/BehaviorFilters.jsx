@@ -1,91 +1,80 @@
 import { useState } from 'react';
 
+const behaviorCategories = {
+  'Hunt Behavior': [
+    'Fast Hunter',
+    'Slow Hunter',
+    'Early Hunter',
+    'Shy/Inactive',
+  ],
+  'Activity Level': [
+    'Very Active',
+    'Low Activity',
+    'Throws Items',
+  ],
+  'Unique Behaviors': [
+    'Multiple objects thrown',
+    'Singing on parabolic mic',
+    'Light manipulation',
+    'Speed variations',
+    'State changes',
+    'Equipment interaction',
+    'Movement-based speed',
+  ],
+};
+
 function BehaviorFilters({ onFilterChange }) {
-  const [activeFilters, setActiveFilters] = useState({
-    huntBehavior: null,
-    activity: null,
-    sanityThreshold: null
-  });
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [selectedBehaviors, setSelectedBehaviors] = useState({});
 
-  const behaviorOptions = [
-    { id: 'fast', label: 'Fast Hunter', icon: '⚡' },
-    { id: 'slow', label: 'Slow Hunter', icon: '🐢' },
-    { id: 'early', label: 'Early Hunter', icon: '🚨' },
-    { id: 'shy', label: 'Shy/Inactive', icon: '🙈' },
-  ];
-
-  const activityOptions = [
-    { id: 'high', label: 'Very Active', icon: '🔥' },
-    { id: 'low', label: 'Low Activity', icon: '💤' },
-    { id: 'items', label: 'Throws Items', icon: '📦' },
-  ];
-
-  const handleFilterToggle = (category, value) => {
-    setActiveFilters(prev => {
-      const newFilters = {
-        ...prev,
-        [category]: prev[category] === value ? null : value
-      };
-      onFilterChange(newFilters);
-      return newFilters;
-    });
+  const toggleBehavior = (behavior) => {
+    const newSelected = { ...selectedBehaviors };
+    newSelected[behavior] = !newSelected[behavior];
+    setSelectedBehaviors(newSelected);
+    onFilterChange(newSelected);
   };
 
-  const resetFilters = () => {
-    setActiveFilters({
-      huntBehavior: null,
-      activity: null,
-      sanityThreshold: null
-    });
-    onFilterChange({
-      huntBehavior: null,
-      activity: null,
-      sanityThreshold: null
-    });
+  const clearAllFilters = () => {
+    setSelectedBehaviors({});
+    onFilterChange({});
   };
+
+  const hasActiveFilters = Object.values(selectedBehaviors).some(v => v);
 
   return (
-    <section className="behavior-filters">
+    <section className="behavior-filters" aria-label="Behavior filters">
       <div className="filter-header">
-        <h3>🎯 Behavior Filters (Optional)</h3>
-        {Object.values(activeFilters).some(v => v !== null) && (
-          <button onClick={resetFilters} className="clear-filters-btn">
+        <h3>🔍 Behavior Filters (Optional)</h3>
+        {hasActiveFilters && (
+          <button
+            onClick={clearAllFilters}
+            className="clear-filters-btn"
+            aria-label="Clear all behavior filters"
+          >
             Clear Filters
           </button>
         )}
       </div>
 
-      <div className="filter-group">
-        <h4>Hunt Behavior</h4>
-        <div className="filter-buttons">
-          {behaviorOptions.map(option => (
-            <button
-              key={option.id}
-              onClick={() => handleFilterToggle('huntBehavior', option.id)}
-              className={`filter-btn ${activeFilters.huntBehavior === option.id ? 'active' : ''}`}
-            >
-              <span className="filter-icon">{option.icon}</span>
-              {option.label}
-            </button>
-          ))}
+      {Object.entries(behaviorCategories).map(([category, behaviors]) => (
+        <div key={category} className="filter-group">
+          <h4>{category}</h4>
+          <div className="filter-buttons">
+            {behaviors.map((behavior) => (
+              <button
+                key={behavior}
+                onClick={() => toggleBehavior(behavior)}
+                className={`filter-btn ${selectedBehaviors[behavior] ? 'active' : ''}`}
+                aria-pressed={selectedBehaviors[behavior]}
+                aria-label={`${behavior} filter`}
+              >
+                {selectedBehaviors[behavior] && '✓ '}
+                {behavior}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="filter-group">
-        <h4>Activity Level</h4>
-        <div className="filter-buttons">
-          {activityOptions.map(option => (
-            <button
-              key={option.id}
-              onClick={() => handleFilterToggle('activity', option.id)}
-              className={`filter-btn ${activeFilters.activity === option.id ? 'active' : ''}`}
-            >
-              <span className="filter-icon">{option.icon}</span>
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      ))}
     </section>
   );
 }
