@@ -3,6 +3,25 @@ import { ghosts } from './data/ghosts';
 import EvidenceSelector from './components/EvidenceSelector';
 import GhostList from './components/GhostList';
 import BehaviorFilters from './components/BehaviorFilters';
+import { useState, useMemo, useEffect } from 'react';
+
+// Inside App component, replace useState with:
+const [selectedEvidence, setSelectedEvidence] = useState(() => {
+  const saved = localStorage.getItem('selectedEvidence');
+  return saved ? JSON.parse(saved) : [];
+});
+
+const [excludedEvidence, setExcludedEvidence] = useState(() => {
+  const saved = localStorage.getItem('excludedEvidence');
+  return saved ? JSON.parse(saved) : [];
+});
+
+// Add useEffect to persist state
+useEffect(() => {
+  localStorage.setItem('selectedEvidence', JSON.stringify(selectedEvidence));
+  localStorage.setItem('excludedEvidence', JSON.stringify(excludedEvidence));
+}, [selectedEvidence, excludedEvidence]);
+
 import './App.css';
 
 function App() {
