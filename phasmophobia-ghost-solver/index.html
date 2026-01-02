@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Phasmophobia Ghost Identifier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="header">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phasmophobia Ghost Identifier</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <h1>👻 Phasmophobia Ghost Identifier</h1>
 
-    <section class="difficulty">
-      <span>Difficulty:</span>
+    <section>
+      <strong>Difficulty:</strong>
       <label>
         <input type="radio" name="difficulty" value="amateur" checked />
         Amateur
+      </label>
+      <label>
+        <input type="radio" name="difficulty" value="intermediate" />
+        Intermediate
+      </label>
+      <label>
+        <input type="radio" name="difficulty" value="professional" />
+        Professional
       </label>
       <label>
         <input type="radio" name="difficulty" value="nightmare" />
@@ -25,68 +31,85 @@
         Insanity
       </label>
     </section>
-  </header>
 
-  <main class="layout">
-    <section class="panel">
+    <section>
       <h2>Evidence</h2>
-      <div id="evidence-panel" class="evidence-panel"></div>
+      <div id="evidence-panel"></div>
+      <small>
+        Left‑click = select evidence, right‑click = mark as excluded (red).
+      </small>
     </section>
 
-    <section class="panel">
+    <section>
       <h2>Most Likely Ghosts</h2>
-      <div id="ghost-list" class="ghost-list"></div>
+      <div id="ghost-list"></div>
 
       <h3>Top Candidates</h3>
-      <ol id="ranked-ghosts" class="ranked-list"></ol>
+      <ul id="ranked-ghosts"></ul>
     </section>
 
-    <section class="panel">
-      <h2>🎧 Advanced Tools</h2>
+    <section>
+      <h2>Ghost Details</h2>
+      <div id="ghost-details">
+        <em>Select a ghost to see its description here.</em>
+      </div>
+    </section>
 
-      <div class="tool">
-        <label for="bpm-input">Footstep BPM:</label>
-        <input type="number" id="bpm-input" placeholder="BPM" />
-        <button id="bpm-check">Check BPM</button>
-        <div id="bpm-result" class="tool-result"></div>
+    <section>
+      <h2>🎧 Advanced Tools <button id="tools-help" type="button">?</button></h2>
+
+      <div id="tools-help-text" class="hidden">
+        <p>
+          <strong>BPM:</strong> Tap or measure the ghost’s footstep tempo and
+          enter it here to highlight ghosts whose speed and BPM match best.
+        </p>
+        <p>
+          <strong>Smudge Timer:</strong> Starts a countdown for how long smudge
+          sticks prevent hunts, shorter for Demon.
+        </p>
+        <p>
+          <strong>Onryo Candle Counter:</strong> Tracks candle extinguishes to
+          see when an Onryo is likely to hunt.
+        </p>
+        <p>
+          <strong>Mimic Probability:</strong> Estimates how likely the Mimic is
+          based on evidence, orbs, and behaviour.
+        </p>
       </div>
 
-      <div class="tool">
-        <label for="smudge-select">Smudge Timer:</label>
+      <div>
+        Footstep BPM:
+        <input type="number" id="bpm-input" placeholder="BPM" />
+        <button id="bpm-check" type="button">Check BPM</button>
+      </div>
+      <div id="bpm-result"></div>
+
+      <div style="margin-top: 0.5rem">
+        Smudge Timer:
         <select id="smudge-select">
           <option value="Normal">Normal (180s)</option>
           <option value="Demon">Demon (60s)</option>
         </select>
-        <button id="smudge-start">Start Timer</button>
-        <div id="smudge-result" class="tool-result"></div>
+        <button id="smudge-start" type="button">Start Timer</button>
+        <div id="smudge-result"></div>
       </div>
 
-      <div class="tool">
-        <span>Onryo Candle Counter:</span>
-        <button id="onryo-add">Increment</button>
-        <button id="onryo-reset">Reset</button>
-        <div id="onryo-count" class="tool-result">0</div>
+      <div style="margin-top: 0.5rem">
+        Onryo Candle Counter:
+        <button id="onryo-add" type="button">Increment</button>
+        <button id="onryo-reset" type="button">Reset</button>
+        <div id="onryo-count">0</div>
       </div>
 
-      <div class="tool">
-        <span>Mimic Probability:</span>
-        <div id="mimic-result" class="tool-result">Low/Medium</div>
+      <div style="margin-top: 0.5rem">
+        Mimic Probability:
+        <span id="mimic-result">Low/Medium</span>
       </div>
     </section>
-  </main>
 
-  <!-- Ghost detail modal -->
-  <div id="ghost-modal" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
-      <button id="close-modal" class="modal-close" aria-label="Close">✖</button>
-      <div id="modal-body"></div>
-    </div>
-  </div>
-
-  <script src="ghosts.js"></script>
-  <script src="tools.js"></script>
-  <script src="solver.js"></script>
-  <script src="app.js"></script>
-</body>
+    <script src="ghosts.js"></script>
+    <script src="solver.js"></script>
+    <script src="tools.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
