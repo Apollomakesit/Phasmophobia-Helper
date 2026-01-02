@@ -3,7 +3,7 @@ import { ghosts } from './data/ghosts';
 import EvidenceSelector from './components/EvidenceSelector';
 import GhostList from './components/GhostList';
 import BehaviorFilters from './components/BehaviorFilters';
-import { useState, useMemo, useEffect } from 'react';
+import './App.css';
 
 // Inside App component, replace useState with:
 const [selectedEvidence, setSelectedEvidence] = useState(() => {
