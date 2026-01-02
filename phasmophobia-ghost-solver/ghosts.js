@@ -1,514 +1,569 @@
-// Full ghost data for Phasmophobia Ghost Identifier
-// Extended with speedLabel and bpmRange for BPM‑based logic.
+// Complete Ghost Database with New Ghosts (Obambo, Gallu, Dayan)
+const EVIDENCE_TYPES = [
+    'EMF Level 5',
+    'D.O.T.S Projector',
+    'Fingerprints',
+    'Ghost Orb',
+    'Ghost Writing',
+    'Freezing Temperatures',
+    'Spirit Box'
+];
 
 const GHOSTS = [
-  {
-    name: "Spirit",
-    evidence: ["EMF 5", "Spirit Box", "Ghost Writing"],
-    cannotHave: ["Freezing", "DOTS", "Ghost Orbs", "UV"],
-    traits: [
-      "Standard hunt behaviour with no strong speed quirks.",
-      "Smudge sticks prevent hunts for 180 seconds."
-    ],
-    giveaway: "Longest smudge cooldown compared to similar ghosts.",
-    tests: [
-      "Smudge during a hunt and time the next possible hunt.",
-      "Compare intervals against Wraith and Myling behaviour."
-    ],
-    notIf: [
-      "Speed changes with line-of-sight.",
-      "Prefers lights or behaves like a hallway camper."
-    ],
-    alike: ["Wraith", "Myling"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Wraith",
-    evidence: ["EMF 5", "Spirit Box", "DOTS"],
-    cannotHave: ["Freezing", "Ghost Writing"],
-    traits: [
-      "Can teleport to players, leading to sudden EMF spikes.",
-      "Does not leave UV footprints after stepping in salt."
-    ],
-    giveaway: "Steps in salt with no UV footprints at all.",
-    tests: [
-      "Place salt, check with UV immediately after steps.",
-      "Watch for sudden teleports and EMF spikes near players."
-    ],
-    notIf: [
-      "Leaves clear UV footprints in salt.",
-      "Shows clear line-of-sight speed behaviour."
-    ],
-    alike: ["Spirit", "Phantom"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Phantom",
-    evidence: ["Spirit Box", "UV", "DOTS"],
-    cannotHave: ["EMF 5", "Ghost Writing"],
-    traits: [
-      "Lowers sanity more when viewed directly.",
-      "Disappears more often in photos."
-    ],
-    giveaway: "Taking a photo makes the ghost disappear for longer than normal.",
-    tests: [
-      "Take photos during appearances and compare disappearance time.",
-      "Watch sanity drops after long visual contact."
-    ],
-    notIf: [
-      "Normal disappearance on photo.",
-      "Standard sanity drain when staring."
-    ],
-    alike: ["Banshee", "Wraith"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Poltergeist",
-    evidence: ["Spirit Box", "Ghost Writing", "UV"],
-    cannotHave: ["EMF 5", "DOTS"],
-    traits: [
-      "Strong ability to throw multiple objects rapidly.",
-      "Can cause high sanity drain when throwing many items at once."
-    ],
-    giveaway: "Large bursts of thrown items in quick succession.",
-    tests: [
-      "Stack items in the room and watch for multi-throws.",
-      "Track sanity loss after object flurries."
-    ],
-    notIf: [
-      "Very few throws despite long investigation.",
-      "No multi-object throws in ghost room."
-    ],
-    alike: ["Mare", "Obake"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Banshee",
-    evidence: ["Ghost Orbs", "UV", "DOTS"],
-    cannotHave: ["EMF 5", "Ghost Writing"],
-    traits: [
-      "Targets a single player for most hunts.",
-      "Special scream on parabolic microphone."
-    ],
-    giveaway:
-      "Consistently paths toward one player only and parabolic scream.",
-    tests: [
-      "Use parabolic in ghost room for unique scream.",
-      "Observe pathing during hunts across multiple players."
-    ],
-    notIf: [
-      "Evenly targets multiple players.",
-      "No special scream after repeated parabolic use."
-    ],
-    alike: ["Phantom", "Wraith"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Jinn",
-    evidence: ["EMF 5", "Freezing", "UV"],
-    cannotHave: ["Spirit Box", "Ghost Writing", "DOTS"],
-    traits: [
-      "Faster when the breaker is on and it has line-of-sight.",
-      "Cannot turn off the breaker directly."
-    ],
-    giveaway: "Speed up in line-of-sight while breaker stays on.",
-    tests: [
-      "Keep breaker on and test chase speed vs broken line-of-sight.",
-      "Track if breaker is ever directly turned off."
-    ],
-    notIf: [
-      "Breaker is turned off by the ghost repeatedly.",
-      "Speed feels stable regardless of line-of-sight."
-    ],
-    alike: ["Raiju", "Revenant"],
-    speedLabel: "Fast (LOS with breaker)",
-    bpmRange: [125, 135]
-  },
-  {
-    name: "Mare",
-    evidence: ["Spirit Box", "Ghost Orbs", "Ghost Writing"],
-    cannotHave: ["EMF 5", "DOTS", "UV"],
-    traits: [
-      "Strong preference for darkness; more likely to hunt in the dark.",
-      "Less likely to turn lights on; may turn them off often."
-    ],
-    giveaway:
-      "Most hunts occur when lights are off, especially after it turns them off.",
-    tests: [
-      "Keep lights on to suppress hunts and see if it fights the light.",
-      "Track where and how often it turns lights off."
-    ],
-    notIf: ["Frequently turns lights on.", "Comfortable hunting in well-lit areas."],
-    alike: ["Poltergeist", "Moroi"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Revenant",
-    evidence: ["Ghost Orbs", "Ghost Writing", "Freezing"],
-    cannotHave: ["EMF 5", "DOTS", "Spirit Box"],
-    traits: [
-      "Very slow when not chasing a visible player.",
-      "Extremely fast when it has line-of-sight."
-    ],
-    giveaway: "Dramatic speed swing between wandering and chasing phases.",
-    tests: [
-      "Break line-of-sight and listen for speed drop.",
-      "Let it see you briefly, then hide and compare footsteps."
-    ],
-    notIf: [
-      "Speed remains consistent throughout hunts.",
-      "Feels only slightly faster in chase."
-    ],
-    alike: ["Jinn", "Hantu"],
-    speedLabel: "Very slow (no LOS) / very fast (LOS)",
-    bpmRange: [85, 95] // average footsteps when not in full chase
-  },
-  {
-    name: "Shade",
-    evidence: ["EMF 5", "Ghost Writing", "Freezing"],
-    cannotHave: ["Spirit Box", "DOTS", "UV"],
-    traits: [
-      "Very shy; harder to provoke events, especially with multiple players.",
-      "Less likely to show itself or start hunts early."
-    ],
-    giveaway:
-      "Long periods of quiet behaviour despite high sanity damage opportunities.",
-    tests: [
-      "Test hunts with solo vs multiple players in the room.",
-      "Track how often events occur vs other games."
-    ],
-    notIf: [
-      "Highly active with many events early.",
-      "Frequent full apparitions at high sanity."
-    ],
-    alike: ["Revenant", "Yurei"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Demon",
-    evidence: ["UV", "Ghost Writing", "Freezing"],
-    cannotHave: ["EMF 5", "DOTS", "Ghost Orbs"],
-    traits: [
-      "Can hunt at higher sanity than most ghosts.",
-      "Smudge protection time is much shorter."
-    ],
-    giveaway: "Early hunts at high sanity and short smudge window.",
-    tests: [
-      "Track first hunt sanity level.",
-      "Smudge and time the next allowed hunt (around 60s)."
-    ],
-    notIf: [
-      "No early hunts even when sanity is low.",
-      "Smudge appears to block hunts for a long time."
-    ],
-    alike: ["Moroi", "Thaye"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Yurei",
-    evidence: ["Ghost Orbs", "Freezing", "DOTS"],
-    cannotHave: ["EMF 5", "Spirit Box", "UV"],
-    traits: [
-      "Heavy sanity drain with its special ability.",
-      "Can slam doors and cause strong room effects."
-    ],
-    giveaway: "Large sudden sanity drops with door slam events.",
-    tests: [
-      "Watch sanity after strong door interactions.",
-      "Compare its drain to other games with similar time spent."
-    ],
-    notIf: [
-      "Sanity loss seems average despite activity.",
-      "Few strong door events."
-    ],
-    alike: ["Shade", "Onryo"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Oni",
-    evidence: ["EMF 5", "Freezing", "DOTS"],
-    cannotHave: ["Spirit Box", "Ghost Orbs", "Ghost Writing"],
-    traits: [
-      "Very visible; more likely to show itself.",
-      "Throws objects with more force than average."
-    ],
-    giveaway: "Frequent full-body apparitions and strong throws.",
-    tests: [
-      "Compare apparition rate to typical games.",
-      "Stack objects and watch for powerful throws."
-    ],
-    notIf: [
-      "Very shy and rarely visible.",
-      "Throws feel weak and infrequent."
-    ],
-    alike: ["Yokai", "Thaye"],
-    speedLabel: "Slightly fast",
-    bpmRange: [120, 130]
-  },
-  {
-    name: "Hantu",
-    evidence: ["Ghost Orbs", "UV", "Freezing"],
-    cannotHave: ["EMF 5", "DOTS", "Spirit Box"],
-    traits: [
-      "Speed depends heavily on room temperature.",
-      "Quicker in colder areas and slower in warm rooms."
-    ],
-    giveaway: "Speed changes as it moves between cold and warm areas.",
-    tests: [
-      "Use breaker and heaters to warm some paths.",
-      "Observe footstep speed differences in various rooms."
-    ],
-    notIf: [
-      "Speed feels stable regardless of temperature.",
-      "Warmer rooms do not slow it down."
-    ],
-    alike: ["Revenant", "Moroi"],
-    speedLabel: "Variable (cold = fast, warm = slow)",
-    bpmRange: [100, 125]
-  },
-  {
-    name: "Yokai",
-    evidence: ["Spirit Box", "Ghost Orbs", "DOTS"],
-    cannotHave: ["EMF 5", "Ghost Writing"],
-    traits: [
-      "More likely to hunt when players talk nearby.",
-      "Limited hearing during hunts at greater distances."
-    ],
-    giveaway:
-      "Voice provokes hunts, but it struggles to chase distant players.",
-    tests: [
-      "Talk near the ghost room and watch hunt frequency.",
-      "Hide at distance to test how well it hears."
-    ],
-    notIf: [
-      "Talking has no apparent effect on hunt rate.",
-      "Tracks players at long distance by sound."
-    ],
-    alike: ["Oni", "Mare"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Goryo",
-    evidence: ["EMF 5", "UV", "DOTS"],
-    cannotHave: ["Spirit Box", "Freezing"],
-    traits: [
-      "DOTS usually only visible on camera.",
-      "Rarely strays far from its room."
-    ],
-    giveaway: "DOTS only show up on camera but not in person.",
-    tests: [
-      "Place DOTS and a camera; watch from truck.",
-      "Check if you can see DOTS in person at all."
-    ],
-    notIf: [
-      "DOTS clearly visible in person consistently.",
-      "Roams far from its original room."
-    ],
-    alike: ["Jinn", "Raiju"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Myling",
-    evidence: ["EMF 5", "UV", "Ghost Writing"],
-    cannotHave: ["Spirit Box", "DOTS", "Freezing"],
-    traits: [
-      "Quieter footsteps at range during hunts.",
-      "More frequent paranormal sounds on parabolic."
-    ],
-    giveaway:
-      "Parabolic is very active but footsteps are hard to hear until close.",
-    tests: [
-      "Use parabolic to record number of sounds.",
-      "Stand at distance during hunts and listen for muted steps."
-    ],
-    notIf: [
-      "Footsteps easy to hear from far away.",
-      "Parabolic remains fairly quiet."
-    ],
-    alike: ["Spirit", "Poltergeist"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Onryo",
-    evidence: ["Spirit Box", "Ghost Orbs", "Freezing"],
-    cannotHave: ["EMF 5", "DOTS", "Ghost Writing"],
-    traits: [
-      "Has special interaction with candles.",
-      "Candles can prevent hunts but can also trigger them."
-    ],
-    giveaway: "Hunts correlate strongly with candle extinguishes.",
-    tests: [
-      "Use the Onryo candle counter tool and track extinguishes.",
-      "Watch for hunts right after candles go out."
-    ],
-    notIf: [
-      "Candles have little effect on hunts.",
-      "Behaves like a normal ghost with fire."
-    ],
-    alike: ["Yurei", "Mare"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "Raiju",
-    evidence: ["EMF 5", "Ghost Orbs", "DOTS"],
-    cannotHave: ["Spirit Box", "Ghost Writing"],
-    traits: [
-      "Faster near active electronic equipment.",
-      "Can cause electronics to malfunction more often."
-    ],
-    giveaway: "Speed up when chasing through equipment-heavy areas.",
-    tests: [
-      "Hunt with lots of electronics active in hallways.",
-      "Remove electronics and compare chase speed."
-    ],
-    notIf: [
-      "Speed does not change around electronics.",
-      "Rarely causes equipment surges."
-    ],
-    alike: ["Jinn", "Goryo"],
-    speedLabel: "Fast near electronics",
-    bpmRange: [125, 135]
-  },
-  {
-    name: "Obake",
-    evidence: ["EMF 5", "Ghost Orbs", "UV"],
-    cannotHave: ["Spirit Box", "DOTS"],
-    traits: [
-      "Shape-shifting fingerprint patterns.",
-      "Fingerprints may disappear faster."
-    ],
-    giveaway: "Odd or unique fingerprints and short-lived prints.",
-    tests: [
-      "Check multiple surfaces for inconsistent fingerprint shapes.",
-      "Time how quickly prints fade."
-    ],
-    notIf: [
-      "Fingerprints are normal and long-lasting.",
-      "Patterns remain consistent."
-    ],
-    alike: ["Poltergeist", "Goryo"],
-    speedLabel: "Normal",
-    bpmRange: [110, 120]
-  },
-  {
-    name: "The Twins",
-    evidence: ["EMF 5", "Spirit Box", "Freezing"],
-    cannotHave: ["Ghost Orbs"],
-    traits: [
-      "Two entities causing interactions in different spots.",
-      "Hunts with varying speeds."
-    ],
-    giveaway:
-      "Double interactions far apart and inconsistent hunt speed.",
-    tests: [
-      "Track interactions in multiple rooms simultaneously.",
-      "Compare speed of different hunts."
-    ],
-    notIf: [
-      "Activity stays focused in one room.",
-      "Speed is very consistent every hunt."
-    ],
-    alike: ["Raiju", "Jinn"],
-    speedLabel: "Variable (one slightly fast, one slightly slow)",
-    bpmRange: [105, 125]
-  },
-  {
-    name: "Mimic",
-    evidence: ["Spirit Box", "UV", "Freezing", "Ghost Orbs"],
-    cannotHave: [],
-    traits: [
-      "Mimics abilities of other ghosts.",
-      "Always has fake Ghost Orbs even if not part of evidence set."
-    ],
-    giveaway:
-      "Evidence pattern fits another ghost but orbs still appear.",
-    tests: [
-      "Compare behaviour to evidence; look for mismatch.",
-      "Verify orbs around any ghost-like behaviour."
-    ],
-    notIf: [
-      "Behaviour matches evidence cleanly with no orb weirdness."
-    ],
-    alike: ["Any ghost it mimics"],
-    speedLabel: "Variable (mimics other ghosts)",
-    bpmRange: [100, 130]
-  },
-  {
-    name: "Moroi",
-    evidence: ["Spirit Box", "Ghost Writing", "Freezing"],
-    cannotHave: ["EMF 5", "DOTS"],
-    traits: [
-      "Curses players, causing faster sanity drain.",
-      "Faster at lower sanity."
-    ],
-    giveaway:
-      "Speed increases over time as sanity drops dramatically.",
-    tests: [
-      "Talk on Spirit Box and watch sanity drain.",
-      "Compare early and late-hunt speeds."
-    ],
-    notIf: [
-      "Sanity drains normally and speed is stable.",
-      "No clear curse effect from Spirit Box."
-    ],
-    alike: ["Demon", "Hantu"],
-    speedLabel: "Scaling (slow early, fast late)",
-    bpmRange: [105, 135]
-  },
-  {
-    name: "Deogen",
-    evidence: ["Spirit Box", "Ghost Writing", "DOTS"],
-    cannotHave: ["EMF 5", "Ghost Orbs"],
-    traits: [
-      "Very fast when far from target, very slow when close.",
-      "Always knows where players are."
-    ],
-    giveaway: "Can never lose you but crawls slowly when near.",
-    tests: [
-      "Let it approach then step away; compare speed changes.",
-      "Hide and listen for constant tracking."
-    ],
-    notIf: [
-      "Can be juked or loses you easily.",
-      "Speed does not slow dramatically when close."
-    ],
-    alike: ["Thaye", "Moroi"],
-    speedLabel: "Very fast far / very slow close",
-    bpmRange: [100, 130]
-  },
-  {
-    name: "Thaye",
-    evidence: ["Ghost Orbs", "Ghost Writing", "DOTS"],
-    cannotHave: ["EMF 5", "Spirit Box"],
-    traits: [
-      "Very strong early-game; weakens over time.",
-      "Activity, speed, and hunt frequency drop as it ages."
-    ],
-    giveaway:
-      "Starts extremely active then becomes very quiet later.",
-    tests: [
-      "Stay long in the house and compare early vs late behaviour.",
-      "Time hunts across long investigations."
-    ],
-    notIf: [
-      "Keeps same strength entire game.",
-      "Never shows strong early activity."
-    ],
-    alike: ["Deogen", "Demon"],
-    speedLabel: "Fast early, slow late",
-    bpmRange: [115, 130]
-  }
+    {
+        name: 'Spirit',
+        evidence: ['EMF Level 5', 'Ghost Writing', 'Spirit Box'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Smudge stick prevents hunting for 180 seconds (vs normal 90s)',
+            'No special hunt behavior',
+            'Cannot hunt if smudged'
+        ],
+        keyGiveaways: [
+            'Extended smudge timer effectiveness',
+            'Completely normal hunt patterns',
+            'No unique abilities or tells'
+        ]
+    },
+    {
+        name: 'Wraith',
+        evidence: ['EMF Level 5', 'D.O.T.S Projector', 'Spirit Box'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Can teleport to random player',
+            'Never touches the ground (no footstep sounds on salt)',
+            'Can step in salt but won't leave UV footprints'
+        ],
+        keyGiveaways: [
+            'EMF 2 reading from random teleport far from ghost room',
+            'Salt disturbed but no footprints',
+            'Sudden EMF spikes from unexpected locations'
+        ]
+    },
+    {
+        name: 'Phantom',
+        evidence: ['Spirit Box', 'Fingerprints', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Taking photo during event makes it disappear',
+            'Flickers less frequently during hunts',
+            'Roams to random players more often',
+            'Drains sanity faster when looking at it during events'
+        ],
+        keyGiveaways: [
+            'Disappears immediately when photographed',
+            'Visible for longer periods during hunts',
+            'Heavy sanity drain during manifestations'
+        ]
+    },
+    {
+        name: 'Poltergeist',
+        evidence: ['Spirit Box', 'Fingerprints', 'Ghost Writing'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Throws multiple objects at once',
+            'Can throw objects with great force',
+            'Reduces sanity significantly when throwing many items',
+            'Very active with props'
+        ],
+        keyGiveaways: [
+            'Multiple objects thrown simultaneously',
+            'Heavy sanity drops from object throws',
+            'Extremely high object interaction rate'
+        ]
+    },
+    {
+        name: 'Banshee',
+        evidence: ['Fingerprints', 'Ghost Orb', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Targets one specific player until they die',
+            'Singing parabolic microphone sound',
+            'Can hunt at any sanity if target is in the house',
+            'Crucifix range 5m instead of 3m',
+            'Female ghost model only'
+        ],
+        keyGiveaways: [
+            'Unique singing detected on parabolic mic',
+            'Always chases same player',
+            'Ignores closer players to reach target',
+            'Extended crucifix range'
+        ]
+    },
+    {
+        name: 'Jinn',
+        evidence: ['EMF Level 5', 'Fingerprints', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Cannot turn off breaker',
+            'Moves faster (2.5 m/s) if target is far and breaker is on',
+            'Slows to normal speed when close',
+            'Drops sanity by 25% if near player with breaker on'
+        ],
+        keyGiveaways: [
+            'Breaker never turns off naturally',
+            'Extremely fast approach from distance',
+            'Sudden speed drop when close',
+            'Major sanity drop ability with breaker on'
+        ]
+    },
+    {
+        name: 'Mare',
+        evidence: ['Spirit Box', 'Ghost Orb', 'Ghost Writing'],
+        huntThreshold: 40,
+        speed: 1.7,
+        behaviors: [
+            'Turns lights off more frequently',
+            'Cannot turn lights on',
+            'Hunts at 60% sanity with lights off',
+            'Hunts at 40% sanity with lights on',
+            'More active in darkness'
+        ],
+        keyGiveaways: [
+            'Lights constantly turned off',
+            'Never turns lights on',
+            'Early hunts in darkness',
+            'Immediate light switches off when turned on'
+        ]
+    },
+    {
+        name: 'Revenant',
+        evidence: ['Ghost Orb', 'Ghost Writing', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.0,
+        behaviors: [
+            'Very slow (1.0 m/s) when not chasing',
+            'Extremely fast (3.0 m/s) when chasing visible player',
+            'Switches between speeds during hunt'
+        ],
+        keyGiveaways: [
+            'Dramatically different speeds during same hunt',
+            'Incredibly fast when chasing',
+            'Very slow when searching',
+            'Speed changes based on line of sight'
+        ]
+    },
+    {
+        name: 'Shade',
+        evidence: ['EMF Level 5', 'Ghost Writing', 'Freezing Temperatures'],
+        huntThreshold: 35,
+        speed: 1.7,
+        behaviors: [
+            'Very shy - less active with multiple people nearby',
+            'Cannot hunt if multiple people in same room',
+            'Won't perform events if players in room',
+            'Prefers to appear when player is alone'
+        ],
+        keyGiveaways: [
+            'Much less active with group together',
+            'Only appears when players separate',
+            'Hunts stop if players group up',
+            'Minimal activity in populated areas'
+        ]
+    },
+    {
+        name: 'Demon',
+        evidence: ['Fingerprints', 'Ghost Writing', 'Freezing Temperatures'],
+        huntThreshold: 70,
+        speed: 1.7,
+        behaviors: [
+            'Can hunt at any sanity level (70% threshold)',
+            'Minimum hunt cooldown 20s instead of 25s',
+            'Smudge only prevents hunting for 60s instead of 90s',
+            'Crucifix range 5m instead of 3m',
+            'Very aggressive'
+        ],
+        keyGiveaways: [
+            'Hunts very early (high sanity)',
+            'Frequent hunts with short cooldowns',
+            'Can hunt multiple times quickly',
+            'Smudge less effective'
+        ]
+    },
+    {
+        name: 'Yurei',
+        evidence: ['Ghost Orb', 'Freezing Temperatures', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Drains sanity faster when near players',
+            'Can close doors during hunts',
+            'Smudging confines it to room for 90s',
+            'More active in draining sanity'
+        ],
+        keyGiveaways: [
+            'Rapid sanity drain',
+            'Doors closing fully during investigation',
+            'Abnormally fast sanity loss near ghost room'
+        ]
+    },
+    {
+        name: 'Oni',
+        evidence: ['EMF Level 5', 'Freezing Temperatures', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Very active with people around',
+            'Throws objects with more force',
+            'Never performs airball event (disappearing mist)',
+            'More visible during hunts (longer flicker intervals)',
+            'Drains sanity more with activity'
+        ],
+        keyGiveaways: [
+            'No small orb events',
+            'Very active when players present',
+            'Objects thrown far',
+            'Longer visibility during hunts'
+        ]
+    },
+    {
+        name: 'Yokai',
+        evidence: ['Spirit Box', 'Ghost Orb', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Can only hear voices/electronics within 2.5m during hunt',
+            'More active when players talk nearby',
+            'Hunts at 80% sanity when people talk near it',
+            'Deaf to equipment during hunts'
+        ],
+        keyGiveaways: [
+            'Hunt triggered by talking near ghost room',
+            'Can't hear you unless very close during hunt',
+            'Activity increases with voice chat',
+            'Early hunts when talking'
+        ]
+    },
+    {
+        name: 'Hantu',
+        evidence: ['Fingerprints', 'Ghost Orb', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.4,
+        behaviors: [
+            'Moves faster in cold (2.7 m/s max in freezing)',
+            'Moves slower in warm areas (1.4 m/s)',
+            'Never turns on breaker',
+            'Visible freezing breath in any room during hunt'
+        ],
+        keyGiveaways: [
+            'Breaker never turns on',
+            'Visible breath during hunts',
+            'Speed varies by temperature',
+            'Much faster in cold rooms'
+        ]
+    },
+    {
+        name: 'Goryo',
+        evidence: ['EMF Level 5', 'Fingerprints', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'D.O.T.S only visible through camera (not with naked eye)',
+            'Cannot change favorite rooms',
+            'Never roams far from ghost room',
+            'D.O.T.S only shows when no one in room'
+        ],
+        keyGiveaways: [
+            'D.O.T.S only on camera, never in person',
+            'Stays in one area consistently',
+            'No roaming to other rooms',
+            'D.O.T.S appears only when room empty'
+        ]
+    },
+    {
+        name: 'Myling',
+        evidence: ['EMF Level 5', 'Fingerprints', 'Ghost Writing'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Footsteps and vocalizations only audible within 12m during hunt',
+            'Very quiet during hunts',
+            'More active on parabolic microphone',
+            'Silent hunts at distance'
+        ],
+        keyGiveaways: [
+            'Can't hear it coming during hunts',
+            'Very quiet footsteps',
+            'Frequent para mic activity',
+            'Silent until very close'
+        ]
+    },
+    {
+        name: 'Onryo',
+        evidence: ['Spirit Box', 'Ghost Orb', 'Freezing Temperatures'],
+        huntThreshold: 60,
+        speed: 1.7,
+        behaviors: [
+            'Blowing out candle can cause hunt',
+            'Third candle blown triggers hunt attempt',
+            'Lit candle within 4m acts as crucifix',
+            'More likely to blow out flames',
+            'Cannot hunt near lit candle'
+        ],
+        keyGiveaways: [
+            'Candles repeatedly blown out',
+            'Hunt after third candle extinguish',
+            'Obsessed with flames',
+            'Multiple flame interactions'
+        ]
+    },
+    {
+        name: 'The Twins',
+        evidence: ['EMF Level 5', 'Spirit Box', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.5,
+        behaviors: [
+            'Two separate entities that interact',
+            'One faster (1.9 m/s), one slower (1.5 m/s)',
+            'Can interact in two places at once',
+            'Different hunt speeds',
+            'Interactions from different locations'
+        ],
+        keyGiveaways: [
+            'Simultaneous interactions in different rooms',
+            'Inconsistent hunt speeds',
+            'EMF readings from two locations',
+            'Different speeds between hunts'
+        ]
+    },
+    {
+        name: 'Raiju',
+        evidence: ['EMF Level 5', 'Ghost Orb', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Moves faster near active electronics (2.5 m/s)',
+            'Disrupts electronics from further away (15m)',
+            'Hunts at 65% sanity near active equipment',
+            'Speed boost with nearby electronics'
+        ],
+        keyGiveaways: [
+            'Speed increases near electronics',
+            'Equipment disrupts from far away',
+            'Early hunts with equipment nearby',
+            'Fast during hunts with active gear'
+        ]
+    },
+    {
+        name: 'Obake',
+        evidence: ['EMF Level 5', 'Fingerprints', 'Ghost Orb'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Fingerprints disappear faster (50% chance after 60s)',
+            'Can leave 6-finger prints',
+            'Can shapeshift into different ghost models',
+            '16.7% chance no fingerprints despite touching',
+            'Reduces hunt flicker time by 25%'
+        ],
+        keyGiveaways: [
+            '6-finger handprints',
+            'Fingerprints disappear early',
+            'Different ghost models seen',
+            'Model changes during hunt',
+            'Fingerprints vanish quickly'
+        ]
+    },
+    {
+        name: 'The Mimic',
+        evidence: ['Spirit Box', 'Fingerprints', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Mimics other ghost behaviors',
+            'ALWAYS shows Ghost Orbs as 4th evidence',
+            'Changes behavior frequently',
+            'Can display any ghost ability',
+            'Unpredictable behavior patterns'
+        ],
+        keyGiveaways: [
+            'Ghost Orbs with non-orb evidence combo',
+            '4 evidence total',
+            'Conflicting behaviors',
+            'Behavior changes mid-investigation',
+            'Unpredictable characteristics'
+        ]
+    },
+    {
+        name: 'Moroi',
+        evidence: ['Spirit Box', 'Ghost Writing', 'Freezing Temperatures'],
+        huntThreshold: 50,
+        speed: 1.5,
+        behaviors: [
+            'Curses player who hears Spirit Box response',
+            'Cursed players lose sanity twice as fast',
+            'Speed increases as average sanity drops (1.5 to 2.25 m/s)',
+            'Smudging blinds it for longer during hunt',
+            'Sanity pills remove curse'
+        ],
+        keyGiveaways: [
+            'Rapid sanity drain after Spirit Box',
+            'Speeds up as sanity drops',
+            'Accelerating hunts',
+            'Faster at lower sanity',
+            'Curse effect on specific player'
+        ]
+    },
+    {
+        name: 'Deogen',
+        evidence: ['Spirit Box', 'Ghost Writing', 'D.O.T.S Projector'],
+        huntThreshold: 40,
+        speed: 3.0,
+        behaviors: [
+            'Always knows where players are',
+            'Very fast when far (3.0 m/s)',
+            'Very slow when close (0.4 m/s)',
+            'Unique heavy breathing Spirit Box response',
+            'Cannot be looped',
+            'Teleports to player at hunt start'
+        ],
+        keyGiveaways: [
+            'Heavy breathing on Spirit Box',
+            'Always finds you immediately',
+            'Extremely slow when near',
+            'Fast approach then crawling speed',
+            'Can't be juked or looped'
+        ]
+    },
+    {
+        name: 'Thaye',
+        evidence: ['Ghost Orb', 'Ghost Writing', 'D.O.T.S Projector'],
+        huntThreshold: 75,
+        speed: 2.75,
+        behaviors: [
+            'Becomes less active over time',
+            'Ages every 1-2 minutes',
+            'Starts very fast (2.75 m/s) and active',
+            'Ends slow (1.0 m/s) and passive',
+            'Hunt threshold drops from 75% to 15%',
+            'Speed decreases with age'
+        ],
+        keyGiveaways: [
+            'Very active and fast early',
+            'Activity decreases over time',
+            'Early hunts then stops',
+            'Speed dramatically decreases',
+            'Ouija board shows aging'
+        ]
+    },
+    {
+        name: 'Obambo',
+        evidence: ['Ghost Writing', 'Fingerprints', 'D.O.T.S Projector'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Alternates between aggressive and docile states every 2 minutes',
+            'AGGRESSIVE: Hunts above 65% sanity, moves at 1.96 m/s, very active',
+            'DOCILE: Hunts below 10% sanity, moves at 1.45 m/s, less active',
+            'Can change states mid-hunt',
+            'State changes affect all behaviors',
+            'Countdown timer visible to all players for state'
+        ],
+        keyGiveaways: [
+            'Dramatic behavior changes every 2 minutes',
+            'Sudden hunt threshold changes',
+            'Speed changes mid-hunt',
+            'Activity fluctuates regularly',
+            'Hunt pattern inconsistency on timer',
+            'Visible countdown above ghost model'
+        ]
+    },
+    {
+        name: 'Gallu',
+        evidence: ['EMF Level 5', 'Fingerprints', 'Spirit Box'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Enters "enraged" state when players use defensive equipment',
+            'ENRAGED: Crucifixes and smudge sticks 50% less effective',
+            'Lasts 20 seconds after equipment use',
+            'After rage ends, enters "exhausted" state',
+            'EXHAUSTED: Defensive items 50% MORE effective',
+            'Cycles between normal, enraged, and exhausted',
+            'Orange glow when enraged'
+        ],
+        keyGiveaways: [
+            'Crucifix burns but hunt still starts',
+            'Smudge doesn't stop hunt normally',
+            'Orange visual glow during rage',
+            'Extended smudge effect other times',
+            'Defensive item inconsistency',
+            'Pattern: normal -> enrage -> exhaust'
+        ]
+    },
+    {
+        name: 'Dayan',
+        evidence: ['EMF Level 5', 'Ghost Orb', 'Spirit Box'],
+        huntThreshold: 50,
+        speed: 1.7,
+        behaviors: [
+            'Speed changes based on player movement within 10m',
+            'Speeds up to 2.0 m/s when players move',
+            'Slows to 1.4 m/s when players stand still',
+            'Always appears as female ghost model',
+            'Movement detection is constant during hunt',
+            'Encourages standing still during hunts'
+        ],
+        keyGiveaways: [
+            'Speed increases when you move',
+            'Slows dramatically when standing still',
+            'Always female model',
+            'Success hiding in place',
+            'Failure when trying to run',
+            'Speed fluctuates with player actions',
+            'Best counter is standing motionless'
+        ]
+    }
+];
+
+// Hunt speed classifications for BPM
+const SPEED_CLASSIFICATIONS = [
+    { name: 'Revenant (Roaming)', min: 0, max: 65, speed: 1.0, ghosts: ['Revenant'] },
+    { name: 'Hantu (Warm)', min: 66, max: 90, speed: 1.4, ghosts: ['Hantu'] },
+    { name: 'Obambo (Docile)', min: 70, max: 95, speed: 1.45, ghosts: ['Obambo'] },
+    { name: 'Moroi/Twins (Slow)', min: 85, max: 105, speed: 1.5, ghosts: ['Moroi', 'The Twins'] },
+    { name: 'Standard Speed', min: 95, max: 115, speed: 1.7, ghosts: ['Spirit', 'Wraith', 'Phantom', 'Poltergeist', 'Banshee', 'Jinn', 'Mare', 'Demon', 'Yurei', 'Oni', 'Yokai', 'Myling', 'Onryo', 'Raiju', 'Obake', 'The Mimic', 'Deogen', 'Thaye', 'Gallu', 'Dayan'] },
+    { name: 'Twins (Fast)', min: 105, max: 125, speed: 1.9, ghosts: ['The Twins'] },
+    { name: 'Obambo (Aggressive)', min: 110, max: 130, speed: 1.96, ghosts: ['Obambo'] },
+    { name: 'Dayan (Moving)', min: 112, max: 132, speed: 2.0, ghosts: ['Dayan'] },
+    { name: 'Moroi/Thaye', min: 120, max: 145, speed: 2.25, ghosts: ['Moroi', 'Thaye'] },
+    { name: 'Jinn/Raiju (Far)', min: 135, max: 165, speed: 2.5, ghosts: ['Jinn', 'Raiju'] },
+    { name: 'Hantu (Cold)', min: 145, max: 175, speed: 2.7, ghosts: ['Hantu'] },
+    { name: 'Thaye (Young)', min: 150, max: 180, speed: 2.75, ghosts: ['Thaye'] },
+    { name: 'Revenant (Chasing)', min: 160, max: 195, speed: 3.0, ghosts: ['Revenant', 'Deogen'] }
+];
+
+// Behavioral checklist items
+const BEHAVIOR_CHECKLIST = [
+    { id: 'multiObject', label: 'Multiple objects thrown at once', suggestGhosts: ['Poltergeist'] },
+    { id: 'singing', label: 'Singing sound on parabolic mic', suggestGhosts: ['Banshee'] },
+    { id: 'lightsOff', label: 'Constantly turns lights off', suggestGhosts: ['Mare'] },
+    { id: 'lightsNeverOn', label: 'Never turns lights on', suggestGhosts: ['Mare', 'Jinn'] },
+    { id: 'breakerOff', label: 'Breaker turns off frequently', suggestGhosts: [] },
+    { id: 'breakerNeverOff', label: 'Breaker never turns off', suggestGhosts: ['Jinn'] },
+    { id: 'breakerNeverOn', label: 'Breaker never turns on', suggestGhosts: ['Hantu'] },
+    { id: 'sixFingers', label: 'Six-fingered handprints', suggestGhosts: ['Obake'] },
+    { id: 'fingerDisappear', label: 'Fingerprints disappeared quickly', suggestGhosts: ['Obake'] },
+    { id: 'shapeshift', label: 'Different ghost models seen', suggestGhosts: ['Obake'] },
+    { id: 'fourEvidence', label: 'Found 4th evidence (Ghost Orbs)', suggestGhosts: ['The Mimic'] },
+    { id: 'heavyBreathing', label: 'Heavy breathing on Spirit Box', suggestGhosts: ['Deogen'] },
+    { id: 'alwaysFinds', label: 'Always finds players instantly', suggestGhosts: ['Deogen'] },
+    { id: 'earlyHunts', label: 'Hunts at very high sanity', suggestGhosts: ['Demon', 'Yokai', 'Raiju', 'Thaye', 'Obambo'] },
+    { id: 'frequentHunts', label: 'Hunts very frequently', suggestGhosts: ['Demon'] },
+    { id: 'quietHunt', label: 'Very quiet during hunts', suggestGhosts: ['Myling'] },
+    { id: 'candlesOut', label: 'Repeatedly blows out candles', suggestGhosts: ['Onryo'] },
+    { id: 'speedChanges', label: 'Speed changes during hunt', suggestGhosts: ['Revenant', 'Moroi', 'Hantu', 'Thaye', 'Obambo', 'Dayan'] },
+    { id: 'twoLocations', label: 'Interactions in two places at once', suggestGhosts: ['The Twins'] },
+    { id: 'rapidSanity', label: 'Rapid sanity drain', suggestGhosts: ['Yurei', 'Moroi'] },
+    { id: 'stateChanges', label: 'Behavior changes every 2 minutes', suggestGhosts: ['Obambo'] },
+    { id: 'defenseFails', label: 'Crucifix/smudge less effective', suggestGhosts: ['Gallu'] },
+    { id: 'orangeGlow', label: 'Orange glow during hunt', suggestGhosts: ['Gallu'] },
+    { id: 'stillWorks', label: 'Standing still slows ghost', suggestGhosts: ['Dayan'] },
+    { id: 'movementSpeeds', label: 'Ghost speeds up when I move', suggestGhosts: ['Dayan'] }
 ];
