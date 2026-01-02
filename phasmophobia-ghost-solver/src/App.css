@@ -827,7 +827,7 @@ body {
     gap: 1rem;
   }
 
-  .toggle-btn
+  .toggle-btn,
   .reset-btn,
   .result-count {
     width: 100%;
