@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phasmophobia Ghost Identifier v1.0</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+<h1>👻 Phasmophobia Ghost Identifier v1.0</h1>
+<div id="difficulty">
+<button data-mode="amateur" class="active">Amateur</button>
+<button data-mode="nightmare">Nightmare</button>
+<button data-mode="insanity">Insanity</button>
+</div>
+</header>
+<section id="evidence-panel"></section>
+<section id="solver-output">
+<h2>🧠 Most Likely Ghosts</h2>
+<div id="ranked-ghosts"></div>
+</section>
+<section id="ghost-list"></section>
+<section id="tools-panel">
+<h2>🎧 Advanced Tools</h2>
+<div id="bpm-tool">
+<label>Footstep BPM:</label>
+<input type="number" id="bpm-input" placeholder="BPM">
+<button id="bpm-check">Check BPM</button>
+<div id="bpm-result"></div>
+</div>
+<div id="smudge-tool">
+<label>Smudge Timer:</label>
+<select id="smudge-select">
+<option value="Normal">Normal (180s)</option>
+<option value="Demon">Demon (60s)</option>
+</select>
+<button id="smudge-start">Start Timer</button>
+<div id="smudge-result"></div>
+</div>
+<div id="onryo-tool">
+<label>Onryo Candle Counter:</label>
+<button id="onryo-add">Increment</button>
+<button id="onryo-reset">Reset</button>
+<div id="onryo-count">0</div>
+</div>
+<div id="mimic-tool">
+<label>Mimic Probability:</label>
+<div id="mimic-result">Low/Medium</div>
+</div>
+</section>
+<div id="ghost-modal" class="hidden">
+<div class="modal-content">
+<span id="close-modal">✖</span>
+<div id="modal-body"></div>
+</div>
+</div>
+<script src="ghosts.js"></script>
+<script src="solver.js"></script>
+<script src="tools.js"></script>
+<script src="app.js"></script>
+<script>
+document.getElementById('bpm-check').onclick = ()=>{
+  const bpm = document.getElementById('bpm-input').value;
+  const ghost = selectedEvidence.length ? solve()[0] : {name:'Unknown'};
+  document.getElementById('bpm-result').textContent = Tools.bpmAnalyzer(bpm, ghost);
+};
+document.getElementById('smudge-start').onclick = ()=>{
+  const type = document.getElementById('smudge-select').value;
+  document.getElementById('smudge-result').textContent = Tools.smudgeTimer(type);
+};
+document.getElementById('onryo-add').onclick = ()=>{
+  document.getElementById('onryo-count').textContent = Tools.onryoCounter.increment();
+};
+document.getElementById('onryo-reset').onclick = ()=>{
+  Tools.onryoCounter.reset();
+  document.getElementById('onryo-count').textContent = 0;
+};
+document.getElementById('mimic-result').textContent = Tools.mimicProbability({name:'Mimic'});
+</script>
+</body>
+</html>
