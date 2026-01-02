@@ -377,8 +377,7 @@ body {
   cursor: pointer;
   font-family: var(--font-main);
   font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-  font-weight
- 600;
+  font-weight: 600;
   transition: all 0.3s ease;
   min-height: 44px;
   touch-action: manipulation;
