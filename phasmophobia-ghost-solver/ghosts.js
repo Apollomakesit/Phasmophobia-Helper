@@ -1,8 +1,36 @@
+// Minimal example data; extend with full info per ghost
 const GHOSTS = [
-  { name: "Revenant", evidence: ["Ghost Orbs","Ghost Writing","Freezing"], cannotHave: ["EMF 5","DOTS","Spirit Box","UV"], traits: ["👣 Extremely slow without LOS","👣 Extremely fast with LOS"], giveaway: "Massive speed jump when line-of-sight is gained", tests: ["Hide during hunt → listen for crawling speed","Let ghost see you → speed becomes uncontrollable"], notIf: ["Fast without seeing you → NOT Revenant"], alike: ["Moroi","Thaye"] },
-  { name: "Deogen", evidence: ["Spirit Box","DOTS","Ghost Writing"], cannotHave: ["Freezing","Orbs","EMF 5","UV"], traits: ["🎯 Always knows your location"], giveaway: "Slows to crawl when near player", tests: ["Loop around table","Ghost slows near you instead of speeding up"], notIf: ["Loses track of player → NOT Deogen"], alike: ["Thaye"] },
-  { name: "Mimic", evidence: ["Spirit Box","Freezing","UV"], forced: ["Ghost Orbs"], traits: ["🧬 Copies other ghosts"], giveaway: "Contradicting behaviors + Orbs", tests: ["Observe speed/abilities changing mid-game"], notIf: [], alike: ["ALL"] },
-  { name: "Onryo", evidence: ["Ghost Orbs","Freezing"], cannotHave: ["EMF 5","Spirit Box","Ghost Writing","UV"], traits: ["🔥 Candles prevent hunts"], giveaway: "Hunt after 3 flames blown out", tests: ["Place candles + crucifix"], notIf: [], alike: ["Demon"] },
-  { name: "Wraith", evidence: ["EMF 5","Spirit Box","Freezing"], cannotHave: ["Ghost Orbs","Ghost Writing","UV"], traits: ["🧂 Never steps in salt"], giveaway: "No salt footprints ever", tests: ["Salt test"], notIf: [], alike: ["Phantom"] },
-  { name: "Raiju", evidence: ["EMF 5","Spirit Box","Ghost Writing"], cannotHave: ["Freezing","UV","DOTS"], traits: ["📡 Faster near electronics"], giveaway: "Speed spikes near active gear", tests: ["Drop electronics during hunt"], notIf: [], alike: ["Jinn"] }
+  {
+    name: "Spirit",
+    evidence: ["EMF 5", "Spirit Box", "Ghost Writing"],
+    cannotHave: ["Freezing", "DOTS", "Ghost Orbs", "UV"],
+    traits: [
+      "Standard hunt behaviour",
+      "Smudge sticks block hunts for 180s"
+    ],
+    giveaway: "Most generic behaviour; use smudge timing to isolate.",
+    tests: [
+      "Track hunt intervals with smudge",
+      "Compare with similar EMF/Box/Writing ghosts"
+    ],
+    notIf: ["Consistent speed changes", "Strong light preference"],
+    alike: ["Wraith", "Myling"]
+  },
+  {
+    name: "Wraith",
+    evidence: ["EMF 5", "Spirit Box", "DOTS"],
+    cannotHave: ["Freezing", "Ghost Writing"],
+    traits: [
+      "Can teleport to players",
+      "Footsteps do not leave UV footprints after salt"
+    ],
+    giveaway: "Stepping in salt without UV footprints.",
+    tests: [
+      "Place salt then check with UV",
+      "Listen for teleport behaviour"
+    ],
+    notIf: ["Leaves UV footprints in salt"],
+    alike: ["Spirit", "Phantom"]
+  }
+  // Add all remaining ghosts here
 ];
