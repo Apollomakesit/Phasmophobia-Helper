@@ -1,5 +1,5 @@
 // Full ghost data for Phasmophobia Ghost Identifier
-// Shape matches solver.js + app.js expectations
+// Extended with speedLabel and bpmRange for BPM‑based logic.
 
 const GHOSTS = [
   {
@@ -19,7 +19,9 @@ const GHOSTS = [
       "Speed changes with line-of-sight.",
       "Prefers lights or behaves like a hallway camper."
     ],
-    alike: ["Wraith", "Myling"]
+    alike: ["Wraith", "Myling"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Wraith",
@@ -34,8 +36,13 @@ const GHOSTS = [
       "Place salt, check with UV immediately after steps.",
       "Watch for sudden teleports and EMF spikes near players."
     ],
-    notIf: ["Leaves clear UV footprints in salt.", "Shows clear line-of-sight speed behaviour."],
-    alike: ["Spirit", "Phantom"]
+    notIf: [
+      "Leaves clear UV footprints in salt.",
+      "Shows clear line-of-sight speed behaviour."
+    ],
+    alike: ["Spirit", "Phantom"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Phantom",
@@ -50,8 +57,13 @@ const GHOSTS = [
       "Take photos during appearances and compare disappearance time.",
       "Watch sanity drops after long visual contact."
     ],
-    notIf: ["Normal disappearance on photo.", "Standard sanity drain when staring."],
-    alike: ["Banshee", "Wraith"]
+    notIf: [
+      "Normal disappearance on photo.",
+      "Standard sanity drain when staring."
+    ],
+    alike: ["Banshee", "Wraith"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Poltergeist",
@@ -66,8 +78,13 @@ const GHOSTS = [
       "Stack items in the room and watch for multi-throws.",
       "Track sanity loss after object flurries."
     ],
-    notIf: ["Very few throws despite long investigation.", "No multi-object throws in ghost room."],
-    alike: ["Mare", "Obake"]
+    notIf: [
+      "Very few throws despite long investigation.",
+      "No multi-object throws in ghost room."
+    ],
+    alike: ["Mare", "Obake"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Banshee",
@@ -77,13 +94,19 @@ const GHOSTS = [
       "Targets a single player for most hunts.",
       "Special scream on parabolic microphone."
     ],
-    giveaway: "Consistently paths toward one player only and parabolic scream.",
+    giveaway:
+      "Consistently paths toward one player only and parabolic scream.",
     tests: [
       "Use parabolic in ghost room for unique scream.",
       "Observe pathing during hunts across multiple players."
     ],
-    notIf: ["Evenly targets multiple players.", "No special scream after repeated parabolic use."],
-    alike: ["Phantom", "Wraith"]
+    notIf: [
+      "Evenly targets multiple players.",
+      "No special scream after repeated parabolic use."
+    ],
+    alike: ["Phantom", "Wraith"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Jinn",
@@ -98,8 +121,13 @@ const GHOSTS = [
       "Keep breaker on and test chase speed vs broken line-of-sight.",
       "Track if breaker is ever directly turned off."
     ],
-    notIf: ["Breaker is turned off by the ghost repeatedly.", "Speed feels stable regardless of line-of-sight."],
-    alike: ["Raiju", "Revenant"]
+    notIf: [
+      "Breaker is turned off by the ghost repeatedly.",
+      "Speed feels stable regardless of line-of-sight."
+    ],
+    alike: ["Raiju", "Revenant"],
+    speedLabel: "Fast (LOS with breaker)",
+    bpmRange: [125, 135]
   },
   {
     name: "Mare",
@@ -109,13 +137,16 @@ const GHOSTS = [
       "Strong preference for darkness; more likely to hunt in the dark.",
       "Less likely to turn lights on; may turn them off often."
     ],
-    giveaway: "Most hunts occur when lights are off, especially after it turns them off.",
+    giveaway:
+      "Most hunts occur when lights are off, especially after it turns them off.",
     tests: [
       "Keep lights on to suppress hunts and see if it fights the light.",
       "Track where and how often it turns lights off."
     ],
     notIf: ["Frequently turns lights on.", "Comfortable hunting in well-lit areas."],
-    alike: ["Poltergeist", "Moroi"]
+    alike: ["Poltergeist", "Moroi"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Revenant",
@@ -130,8 +161,13 @@ const GHOSTS = [
       "Break line-of-sight and listen for speed drop.",
       "Let it see you briefly, then hide and compare footsteps."
     ],
-    notIf: ["Speed remains consistent throughout hunts.", "Feels only slightly faster in chase."],
-    alike: ["Jinn", "Hantu"]
+    notIf: [
+      "Speed remains consistent throughout hunts.",
+      "Feels only slightly faster in chase."
+    ],
+    alike: ["Jinn", "Hantu"],
+    speedLabel: "Very slow (no LOS) / very fast (LOS)",
+    bpmRange: [85, 95] // average footsteps when not in full chase
   },
   {
     name: "Shade",
@@ -141,13 +177,19 @@ const GHOSTS = [
       "Very shy; harder to provoke events, especially with multiple players.",
       "Less likely to show itself or start hunts early."
     ],
-    giveaway: "Long periods of quiet behaviour despite high sanity damage opportunities.",
+    giveaway:
+      "Long periods of quiet behaviour despite high sanity damage opportunities.",
     tests: [
       "Test hunts with solo vs multiple players in the room.",
       "Track how often events occur vs other games."
     ],
-    notIf: ["Highly active with many events early.", "Frequent full apparitions at high sanity."],
-    alike: ["Revenant", "Yurei"]
+    notIf: [
+      "Highly active with many events early.",
+      "Frequent full apparitions at high sanity."
+    ],
+    alike: ["Revenant", "Yurei"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Demon",
@@ -162,8 +204,13 @@ const GHOSTS = [
       "Track first hunt sanity level.",
       "Smudge and time the next allowed hunt (around 60s)."
     ],
-    notIf: ["No early hunts even when sanity is low.", "Smudge appears to block hunts for a long time."],
-    alike: ["Moroi", "Thaye"]
+    notIf: [
+      "No early hunts even when sanity is low.",
+      "Smudge appears to block hunts for a long time."
+    ],
+    alike: ["Moroi", "Thaye"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Yurei",
@@ -178,8 +225,13 @@ const GHOSTS = [
       "Watch sanity after strong door interactions.",
       "Compare its drain to other games with similar time spent."
     ],
-    notIf: ["Sanity loss seems average despite activity.", "Few strong door events."],
-    alike: ["Shade", "Onryo"]
+    notIf: [
+      "Sanity loss seems average despite activity.",
+      "Few strong door events."
+    ],
+    alike: ["Shade", "Onryo"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Oni",
@@ -194,8 +246,13 @@ const GHOSTS = [
       "Compare apparition rate to typical games.",
       "Stack objects and watch for powerful throws."
     ],
-    notIf: ["Very shy and rarely visible.", "Throws feel weak and infrequent."],
-    alike: ["Yokai", "Thaye"]
+    notIf: [
+      "Very shy and rarely visible.",
+      "Throws feel weak and infrequent."
+    ],
+    alike: ["Yokai", "Thaye"],
+    speedLabel: "Slightly fast",
+    bpmRange: [120, 130]
   },
   {
     name: "Hantu",
@@ -210,8 +267,13 @@ const GHOSTS = [
       "Use breaker and heaters to warm some paths.",
       "Observe footstep speed differences in various rooms."
     ],
-    notIf: ["Speed feels stable regardless of temperature.", "Warmer rooms do not slow it down."],
-    alike: ["Revenant", "Moroi"]
+    notIf: [
+      "Speed feels stable regardless of temperature.",
+      "Warmer rooms do not slow it down."
+    ],
+    alike: ["Revenant", "Moroi"],
+    speedLabel: "Variable (cold = fast, warm = slow)",
+    bpmRange: [100, 125]
   },
   {
     name: "Yokai",
@@ -221,13 +283,19 @@ const GHOSTS = [
       "More likely to hunt when players talk nearby.",
       "Limited hearing during hunts at greater distances."
     ],
-    giveaway: "Voice provokes hunts, but it struggles to chase distant players.",
+    giveaway:
+      "Voice provokes hunts, but it struggles to chase distant players.",
     tests: [
       "Talk near the ghost room and watch hunt frequency.",
       "Hide at distance to test how well it hears."
     ],
-    notIf: ["Talking has no apparent effect on hunt rate.", "Tracks players at long distance by sound."],
-    alike: ["Oni", "Mare"]
+    notIf: [
+      "Talking has no apparent effect on hunt rate.",
+      "Tracks players at long distance by sound."
+    ],
+    alike: ["Oni", "Mare"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Goryo",
@@ -242,8 +310,13 @@ const GHOSTS = [
       "Place DOTS and a camera; watch from truck.",
       "Check if you can see DOTS in person at all."
     ],
-    notIf: ["DOTS clearly visible in person consistently.", "Roams far from its original room."],
-    alike: ["Jinn", "Raiju"]
+    notIf: [
+      "DOTS clearly visible in person consistently.",
+      "Roams far from its original room."
+    ],
+    alike: ["Jinn", "Raiju"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Myling",
@@ -253,13 +326,19 @@ const GHOSTS = [
       "Quieter footsteps at range during hunts.",
       "More frequent paranormal sounds on parabolic."
     ],
-    giveaway: "Parabolic is very active but footsteps are hard to hear until close.",
+    giveaway:
+      "Parabolic is very active but footsteps are hard to hear until close.",
     tests: [
       "Use parabolic to record number of sounds.",
       "Stand at distance during hunts and listen for muted steps."
     ],
-    notIf: ["Footsteps easy to hear from far away.", "Parabolic remains fairly quiet."],
-    alike: ["Spirit", "Poltergeist"]
+    notIf: [
+      "Footsteps easy to hear from far away.",
+      "Parabolic remains fairly quiet."
+    ],
+    alike: ["Spirit", "Poltergeist"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Onryo",
@@ -274,8 +353,13 @@ const GHOSTS = [
       "Use the Onryo candle counter tool and track extinguishes.",
       "Watch for hunts right after candles go out."
     ],
-    notIf: ["Candles have little effect on hunts.", "Behaves like a normal ghost with fire."],
-    alike: ["Yurei", "Mare"]
+    notIf: [
+      "Candles have little effect on hunts.",
+      "Behaves like a normal ghost with fire."
+    ],
+    alike: ["Yurei", "Mare"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "Raiju",
@@ -290,8 +374,13 @@ const GHOSTS = [
       "Hunt with lots of electronics active in hallways.",
       "Remove electronics and compare chase speed."
     ],
-    notIf: ["Speed does not change around electronics.", "Rarely causes equipment surges."],
-    alike: ["Jinn", "Goryo"]
+    notIf: [
+      "Speed does not change around electronics.",
+      "Rarely causes equipment surges."
+    ],
+    alike: ["Jinn", "Goryo"],
+    speedLabel: "Fast near electronics",
+    bpmRange: [125, 135]
   },
   {
     name: "Obake",
@@ -306,8 +395,13 @@ const GHOSTS = [
       "Check multiple surfaces for inconsistent fingerprint shapes.",
       "Time how quickly prints fade."
     ],
-    notIf: ["Fingerprints are normal and long-lasting.", "Patterns remain consistent."],
-    alike: ["Poltergeist", "Goryo"]
+    notIf: [
+      "Fingerprints are normal and long-lasting.",
+      "Patterns remain consistent."
+    ],
+    alike: ["Poltergeist", "Goryo"],
+    speedLabel: "Normal",
+    bpmRange: [110, 120]
   },
   {
     name: "The Twins",
@@ -317,13 +411,19 @@ const GHOSTS = [
       "Two entities causing interactions in different spots.",
       "Hunts with varying speeds."
     ],
-    giveaway: "Double interactions far apart and inconsistent hunt speed.",
+    giveaway:
+      "Double interactions far apart and inconsistent hunt speed.",
     tests: [
       "Track interactions in multiple rooms simultaneously.",
       "Compare speed of different hunts."
     ],
-    notIf: ["Activity stays focused in one room.", "Speed is very consistent every hunt."],
-    alike: ["Raiju", "Jinn"]
+    notIf: [
+      "Activity stays focused in one room.",
+      "Speed is very consistent every hunt."
+    ],
+    alike: ["Raiju", "Jinn"],
+    speedLabel: "Variable (one slightly fast, one slightly slow)",
+    bpmRange: [105, 125]
   },
   {
     name: "Mimic",
@@ -333,13 +433,18 @@ const GHOSTS = [
       "Mimics abilities of other ghosts.",
       "Always has fake Ghost Orbs even if not part of evidence set."
     ],
-    giveaway: "Evidence pattern fits another ghost but orbs still appear.",
+    giveaway:
+      "Evidence pattern fits another ghost but orbs still appear.",
     tests: [
       "Compare behaviour to evidence; look for mismatch.",
       "Verify orbs around any ghost-like behaviour."
     ],
-    notIf: ["Behaviour matches evidence cleanly with no orb weirdness."],
-    alike: ["Any ghost it mimics"]
+    notIf: [
+      "Behaviour matches evidence cleanly with no orb weirdness."
+    ],
+    alike: ["Any ghost it mimics"],
+    speedLabel: "Variable (mimics other ghosts)",
+    bpmRange: [100, 130]
   },
   {
     name: "Moroi",
@@ -349,13 +454,19 @@ const GHOSTS = [
       "Curses players, causing faster sanity drain.",
       "Faster at lower sanity."
     ],
-    giveaway: "Speed increases over time as sanity drops dramatically.",
+    giveaway:
+      "Speed increases over time as sanity drops dramatically.",
     tests: [
       "Talk on Spirit Box and watch sanity drain.",
       "Compare early and late-hunt speeds."
     ],
-    notIf: ["Sanity drains normally and speed is stable.", "No clear curse effect from Spirit Box."],
-    alike: ["Demon", "Hantu"]
+    notIf: [
+      "Sanity drains normally and speed is stable.",
+      "No clear curse effect from Spirit Box."
+    ],
+    alike: ["Demon", "Hantu"],
+    speedLabel: "Scaling (slow early, fast late)",
+    bpmRange: [105, 135]
   },
   {
     name: "Deogen",
@@ -370,8 +481,13 @@ const GHOSTS = [
       "Let it approach then step away; compare speed changes.",
       "Hide and listen for constant tracking."
     ],
-    notIf: ["Can be juked or loses you easily.", "Speed does not slow dramatically when close."],
-    alike: ["Thaye", "Moroi"]
+    notIf: [
+      "Can be juked or loses you easily.",
+      "Speed does not slow dramatically when close."
+    ],
+    alike: ["Thaye", "Moroi"],
+    speedLabel: "Very fast far / very slow close",
+    bpmRange: [100, 130]
   },
   {
     name: "Thaye",
@@ -381,12 +497,18 @@ const GHOSTS = [
       "Very strong early-game; weakens over time.",
       "Activity, speed, and hunt frequency drop as it ages."
     ],
-    giveaway: "Starts extremely active then becomes very quiet later.",
+    giveaway:
+      "Starts extremely active then becomes very quiet later.",
     tests: [
       "Stay long in the house and compare early vs late behaviour.",
       "Time hunts across long investigations."
     ],
-    notIf: ["Keeps same strength entire game.", "Never shows strong early activity."],
-    alike: ["Deogen", "Demon"]
+    notIf: [
+      "Keeps same strength entire game.",
+      "Never shows strong early activity."
+    ],
+    alike: ["Deogen", "Demon"],
+    speedLabel: "Fast early, slow late",
+    bpmRange: [115, 130]
   }
 ];
