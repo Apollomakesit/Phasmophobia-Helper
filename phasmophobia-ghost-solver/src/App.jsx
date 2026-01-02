@@ -1,12 +1,15 @@
 import { useState, useMemo } from 'react';
 import { ghosts } from './data/ghosts';
-import { evidenceTypes } from './data/evidence';
+import EvidenceSelector from './components/EvidenceSelector';
+import GhostList from './components/GhostList';
+import BehaviorFilters from './components/BehaviorFilters';
 import './App.css';
 
 function App() {
   const [selectedEvidence, setSelectedEvidence] = useState([]);
   const [excludedEvidence, setExcludedEvidence] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
+  const [behaviorFilters, setBehaviorFilters] = useState({});
 
   const handleEvidenceClick = (evidence) => {
     if (selectedEvidence.includes(evidence)) {
@@ -17,6 +20,12 @@ function App() {
     } else {
       setSelectedEvidence(prev => [...prev, evidence]);
     }
+  };
+
+  const handleReset = () => {
+    setSelectedEvidence([]);
+    setExcludedEvidence([]);
+    setBehaviorFilters({});
   };
 
   const filteredGhosts = useMemo(() => {
@@ -43,64 +52,44 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>👻 Phasmophobia Ghost Identifier</h1>
-        <p>Select evidence to narrow down the ghost</p>
+        <p className="subtitle">The Ultimate Ghost Hunting Tool</p>
+        <div className="instructions">
+          Click once to <span className="badge-green">confirm</span> evidence, 
+          twice to <span className="badge-red">rule out</span>, 
+          three times to reset
+        </div>
       </header>
 
-      <section className="evidence-selector">
-        {evidenceTypes.map(({ name, icon }) => {
-          const isSelected = selectedEvidence.includes(name);
-          const isExcluded = excludedEvidence.includes(name);
-          return (
-            <button
-              key={name}
-              onClick={() => handleEvidenceClick(name)}
-              className={`evidence-btn ${isSelected ? 'selected' : ''} ${isExcluded ? 'excluded' : ''}`}
-            >
-              <span className="icon">{icon}</span>
-              <span className="name">{name}</span>
-            </button>
-          );
-        })}
-      </section>
+      <EvidenceSelector
+        selectedEvidence={selectedEvidence}
+        excludedEvidence={excludedEvidence}
+        onEvidenceClick={handleEvidenceClick}
+      />
+
+      <BehaviorFilters onFilterChange={setBehaviorFilters} />
 
       <div className="controls">
         <button onClick={() => setShowDetails(!showDetails)} className="toggle-btn">
-          {showDetails ? 'Hide' : 'Show'} Behaviors & Giveaways
+          {showDetails ? '🔼 Hide' : '🔽 Show'} Detailed Behaviors
         </button>
-        <button onClick={() => { setSelectedEvidence([]); setExcludedEvidence([]); }} className="reset-btn">
-          Reset All
+        <button onClick={handleReset} className="reset-btn">
+          🔄 Reset All
         </button>
+        <div className="result-count">
+          Showing {filteredGhosts.length} of {ghosts.length} ghosts
+        </div>
       </div>
 
-      <section className="ghost-list">
-        <h2>Possible Ghosts ({filteredGhosts.length})</h2>
-        {filteredGhosts.map(ghost => (
-          <div key={ghost.name} className="ghost-card" style={{"--probability": ghost.probability}}>
-            <div className="ghost-header">
-              <h3>{ghost.name}</h3>
-              <div className="probability">{Math.round(ghost.probability)}%</div>
-            </div>
-            <div className="evidence-list">
-              {ghost.evidence.map(ev => (
-                <span key={ev} className={`evidence-tag ${selectedEvidence.includes(ev) ? 'matched' : ''}`}>
-                  {ev}
-                </span>
-              ))}
-              {ghost.bonusEvidence && (
-                <span className="evidence-tag bonus">{ghost.bonusEvidence}</span>
-              )}
-            </div>
-            {showDetails && (
-              <div className="ghost-details">
-                <p><strong>💪 Strength:</strong> {ghost.strength}</p>
-                <p><strong>🛡️ Weakness:</strong> {ghost.weakness}</p>
-                <p><strong>🎭 Behaviors:</strong> {ghost.behaviors.join(', ')}</p>
-                <p><strong>🔍 Key Giveaways:</strong> {ghost.giveaways.join(', ')}</p>
-              </div>
-            )}
-          </div>
-        ))}
-      </section>
+      <GhostList 
+        ghosts={filteredGhosts} 
+        showDetails={showDetails}
+        selectedEvidence={selectedEvidence}
+      />
+
+      <footer className="footer">
+        <p>Updated for Phasmophobia v0.10+ (January 2026)</p>
+        <p>Includes Dayan, Gallu, and Obambo ghosts</p>
+      </footer>
     </div>
   );
 }
