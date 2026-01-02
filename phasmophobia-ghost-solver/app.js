@@ -4,6 +4,7 @@ const ghostList = document.getElementById('ghost-list');
 const ranked = document.getElementById('ranked-ghosts');
 const modal = document.getElementById('ghost-modal');
 const modalBody = document.getElementById('modal-body');
+const closeBtn = document.getElementById('close-modal');
 
 evidenceTypes.forEach(e => {
   const div = document.createElement('div');
@@ -33,12 +34,24 @@ function render() {
 
 function openModal(g) {
   modal.classList.remove('hidden');
-  modalBody.innerHTML = `<h2>${g.name}</h2>
-<p><b>Unique Traits:</b><br>${g.traits.join('<br>')}</p>
-<p><b>☠️ Dead Giveaway:</b> ${g.giveaway}</p>
-<p><b>🧪 Tests:</b><br>${g.tests.join('<br>')}</p>
-<p><b>🚫 Not If:</b><br>${g.notIf.join('<br>')}</p>
-<p><b>⚠️ Alike:</b> ${g.alike.join(', ')}</p>`;
+  modalBody.innerHTML = `
+    ${g.name}
+    ---------
+
+    **Unique Traits:**  
+    ${g.traits.join('  \n')}
+
+    **☠️ Dead Giveaway:** ${g.giveaway}
+
+    **🧪 Tests:**  
+    ${g.tests.join('  \n')}
+
+    **🚫 Not If:**  
+    ${g.notIf.join('  \n')}
+
+    **⚠️ Alike:** ${g.alike.join(', ')}
+  `;
 }
-document.getElementById('close-modal').onclick = ()=>modal.classList.add('hidden');
+
+closeBtn.onclick = () => modal.classList.add('hidden');
 render();
