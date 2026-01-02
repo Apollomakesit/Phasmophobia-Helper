@@ -1,6 +1,6 @@
-function GhostList({ ghosts, showDetails, selectedEvidence }) {
-  import GhostCard from './GhostCard';
+import GhostCard from './GhostCard';
 
+function GhostList({ ghosts, showDetails, selectedEvidence }) {
   if (ghosts.length === 0) {
     return (
       <section className="ghost-list">
