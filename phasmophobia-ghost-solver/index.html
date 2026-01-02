@@ -1,82 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phasmophobia Ghost Identifier v1.0</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Phasmophobia Ghost Identifier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header>
-<h1>👻 Phasmophobia Ghost Identifier v1.0</h1>
-<div id="difficulty">
-<button data-mode="amateur" class="active">Amateur</button>
-<button data-mode="nightmare">Nightmare</button>
-<button data-mode="insanity">Insanity</button>
-</div>
-</header>
-<section id="evidence-panel"></section>
-<section id="solver-output">
-<h2>🧠 Most Likely Ghosts</h2>
-<div id="ranked-ghosts"></div>
-</section>
-<section id="ghost-list"></section>
-<section id="tools-panel">
-<h2>🎧 Advanced Tools</h2>
-<div id="bpm-tool">
-<label>Footstep BPM:</label>
-<input type="number" id="bpm-input" placeholder="BPM">
-<button id="bpm-check">Check BPM</button>
-<div id="bpm-result"></div>
-</div>
-<div id="smudge-tool">
-<label>Smudge Timer:</label>
-<select id="smudge-select">
-<option value="Normal">Normal (180s)</option>
-<option value="Demon">Demon (60s)</option>
-</select>
-<button id="smudge-start">Start Timer</button>
-<div id="smudge-result"></div>
-</div>
-<div id="onryo-tool">
-<label>Onryo Candle Counter:</label>
-<button id="onryo-add">Increment</button>
-<button id="onryo-reset">Reset</button>
-<div id="onryo-count">0</div>
-</div>
-<div id="mimic-tool">
-<label>Mimic Probability:</label>
-<div id="mimic-result">Low/Medium</div>
-</div>
-</section>
-<div id="ghost-modal" class="hidden">
-<div class="modal-content">
-<span id="close-modal">✖</span>
-<div id="modal-body"></div>
-</div>
-</div>
-<script src="ghosts.js"></script>
-<script src="solver.js"></script>
-<script src="tools.js"></script>
-<script src="app.js"></script>
-<script>
-document.getElementById('bpm-check').onclick = ()=>{
-  const bpm = document.getElementById('bpm-input').value;
-  const ghost = selectedEvidence.length ? solve()[0] : {name:'Unknown'};
-  document.getElementById('bpm-result').textContent = Tools.bpmAnalyzer(bpm, ghost);
-};
-document.getElementById('smudge-start').onclick = ()=>{
-  const type = document.getElementById('smudge-select').value;
-  document.getElementById('smudge-result').textContent = Tools.smudgeTimer(type);
-};
-document.getElementById('onryo-add').onclick = ()=>{
-  document.getElementById('onryo-count').textContent = Tools.onryoCounter.increment();
-};
-document.getElementById('onryo-reset').onclick = ()=>{
-  Tools.onryoCounter.reset();
-  document.getElementById('onryo-count').textContent = 0;
-};
-document.getElementById('mimic-result').textContent = Tools.mimicProbability({name:'Mimic'});
-</script>
+  <header class="header">
+    <h1>👻 Phasmophobia Ghost Identifier</h1>
+
+    <section class="difficulty">
+      <span>Difficulty:</span>
+      <label>
+        <input type="radio" name="difficulty" value="amateur" checked />
+        Amateur
+      </label>
+      <label>
+        <input type="radio" name="difficulty" value="nightmare" />
+        Nightmare
+      </label>
+      <label>
+        <input type="radio" name="difficulty" value="insanity" />
+        Insanity
+      </label>
+    </section>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <h2>Evidence</h2>
+      <div id="evidence-panel" class="evidence-panel"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Most Likely Ghosts</h2>
+      <div id="ghost-list" class="ghost-list"></div>
+
+      <h3>Top Candidates</h3>
+      <ol id="ranked-ghosts" class="ranked-list"></ol>
+    </section>
+
+    <section class="panel">
+      <h2>🎧 Advanced Tools</h2>
+
+      <div class="tool">
+        <label for="bpm-input">Footstep BPM:</label>
+        <input type="number" id="bpm-input" placeholder="BPM" />
+        <button id="bpm-check">Check BPM</button>
+        <div id="bpm-result" class="tool-result"></div>
+      </div>
+
+      <div class="tool">
+        <label for="smudge-select">Smudge Timer:</label>
+        <select id="smudge-select">
+          <option value="Normal">Normal (180s)</option>
+          <option value="Demon">Demon (60s)</option>
+        </select>
+        <button id="smudge-start">Start Timer</button>
+        <div id="smudge-result" class="tool-result"></div>
+      </div>
+
+      <div class="tool">
+        <span>Onryo Candle Counter:</span>
+        <button id="onryo-add">Increment</button>
+        <button id="onryo-reset">Reset</button>
+        <div id="onryo-count" class="tool-result">0</div>
+      </div>
+
+      <div class="tool">
+        <span>Mimic Probability:</span>
+        <div id="mimic-result" class="tool-result">Low/Medium</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Ghost detail modal -->
+  <div id="ghost-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button id="close-modal" class="modal-close" aria-label="Close">✖</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="ghosts.js"></script>
+  <script src="tools.js"></script>
+  <script src="solver.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
